@@ -16,3 +16,15 @@ FROM
     bookings
 WHERE 
     is_canceled = 1;
+
+
+-- 3.Calculate the average price of bookings made by adults only. 
+
+SELECT * FROM BOOKINGS
+
+SELECT ADULTS,
+	   CAST(AVG(price) AS NUMERIC (10,2)) AS AVG_BOOKING_PRICE
+FROM BOOKINGS
+  WHERE PRICE IS NOT NULL
+GROUP BY ADULTS
+	ORDER BY AVG_BOOKING_PRICE DESC; 
