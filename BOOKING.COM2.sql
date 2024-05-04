@@ -62,3 +62,14 @@ SELECT
     (SUM(CASE WHEN CAST(IS_CANCELED AS boolean) THEN 1 ELSE 0 END) * 100.0) / COUNT(*) AS percentage_canceled
 FROM 
     BOOKINGS;
+
+
+--7.Identify the market segment with the highest average booking price.
+
+SELECT * FROM BOOKINGS
+
+SELECT MARKET_SEGMENT, 
+       CAST(AVG(PRICE) AS NUMERIC (10,2)) AS Highest_avg_booking_price
+FROM BOOKINGS
+GROUP BY 1
+ORDER BY 2 DESC;
