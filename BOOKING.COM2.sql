@@ -51,3 +51,14 @@ FROM BOOKINGS
 GROUP BY MARKET_SEGMENT
 ORDER BY 2 DESC;
 
+
+--6.Determine the percentage of canceled bookings.
+
+SELECT * FROM BOOKINGS
+
+SELECT 
+    COUNT(*) AS total_bookings,
+    SUM(CASE WHEN CAST(IS_CANCELED AS boolean) THEN 1 ELSE 0 END) AS canceled_bookings,
+    (SUM(CASE WHEN CAST(IS_CANCELED AS boolean) THEN 1 ELSE 0 END) * 100.0) / COUNT(*) AS percentage_canceled
+FROM 
+    BOOKINGS;
