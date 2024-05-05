@@ -112,3 +112,84 @@ FROM
     WeekendStayCounts
 WHERE 
     country_rank = 1;
+
+
+--11.Retrieve the bookings made by customers who have provided an email address.
+
+select booking_id,
+	   NAME,
+	   email   
+	from bookings
+where email is not null
+
+
+--12.Find the total number of bookings made by agents with IDs above 100.
+
+select count(booking_id) as TOTAL_BOOKINGS,
+	agent
+	from bookings
+where agent > 100 
+group by 2
+
+
+--13.Calculate the average price of bookings made by customers who stayed for more than 3 weekend nights.
+
+SELECT BOOKING_ID,
+	   STAYS_IN_WEEKAND_NIGHTS,
+	   AVG(PRICE) AS PRICE
+	FROM BOOKINGS
+WHERE STAYS_IN_WEEKAND_NIGHTS > 3 
+	AND PRICE IS NOT NULL 
+GROUP BY 1,2
+ORDER BY 3 DESC;
+
+--14.Identify the most common meal choice among bookings.
+SELECT 
+    MEAL,
+    COUNT(*) AS frequency
+FROM 
+    BOOKINGS
+GROUP BY 
+    MEAL
+ORDER BY 
+    frequency DESC
+LIMIT 1;
+
+--15.List the bookings made by customers who reserved a parking space.
+
+SELECT REQUIRED_CAR_PARKING_SPACES,
+	   COUNT(*) AS TOTAL_BOOKING
+	FROM BOOKINGS
+	WHERE REQUIRED_CAR_PARKING_SPACES > 0
+GROUP BY REQUIRED_CAR_PARKING_SPACES
+
+
+
+
+
+--16.Determine the average price of bookings made by customers from each country.
+
+SELECT 
+    COUNTRY,
+    AVG(PRICE) AS average_booking_price
+FROM 
+    BOOKINGS
+	WHERE COUNTRY IS NOT NULL
+GROUP BY 
+    COUNTRY
+	ORDER BY 2 DESC ;
+
+--17.Find the total revenue generated from bookings made in the last month.
+SELECT 
+    BOOKING_ID,
+	EXTRACT(MONTH FROM BOOKING_DATE) AS PREVIOUS_MONTH,
+    SUM(PRICE) AS TOTAL_REVENUE
+FROM 
+    BOOKINGS
+WHERE 
+    EXTRACT(MONTH FROM BOOKING_DATE) = EXTRACT(MONTH FROM CURRENT_DATE) - 1 
+	AND PRICE IS NOT NULL
+GROUP BY 
+    BOOKING_ID,2
+ORDER BY 
+    TOTAL_REVENUE DESC;
