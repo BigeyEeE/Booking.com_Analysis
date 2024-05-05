@@ -73,3 +73,42 @@ SELECT MARKET_SEGMENT,
 FROM BOOKINGS
 GROUP BY 1
 ORDER BY 2 DESC;
+
+
+--8.Find the total number of bookings made for each hotel.
+ 
+SELECT HOTEL,
+	   COUNT(BOOKING_ID) AS TOTAL_BOOKINGS
+	FROM BOOKINGS
+GROUP BY HOTEL
+
+--9.Calculate the average number of children per booking.
+
+SELECT BOOKING_ID,
+	   CAST(AVG(CHILDREN) AS NUMERIC (10,2))AS avg_child_booking
+	FROM BOOKINGS
+WHERE CHILDREN IS NOT NULL
+GROUP BY BOOKING_ID
+ORDER BY 2 DESC;
+
+
+--10.List the countries where the majority of bookings are made for weekend stays.
+
+WITH WeekendStayCounts AS (
+    SELECT 
+        COUNTRY,
+        COUNT(*) AS weekand_stay_count,
+        RANK() OVER (ORDER BY COUNT(*) DESC) AS country_rank
+    FROM 
+        BOOKINGS
+    WHERE 
+        STAYS_IN_WEEKAND_NIGHTS > 0
+    GROUP BY 
+        COUNTRY
+)
+SELECT 
+    COUNTRY
+FROM 
+    WeekendStayCounts
+WHERE 
+    country_rank = 1;
